@@ -46,6 +46,17 @@ export const getServerSideProps: GetServerSideProps = async () => {
 const Teams = ({ teams }: TeamsProps): JSX.Element => {
   return (
     <>
+      <Container maxWidth="md">
+        {teams &&
+          teams.map((team) => (
+            <Team
+              key={team.id}
+              name={team.name ?? ""}
+              employees={team.employees}
+              subteams={team.subteams}
+            />
+          ))}
+      </Container>
     </>
   );
 };

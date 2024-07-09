@@ -79,7 +79,7 @@ export const SideBar = ({
         }}
       >
         <Box px={2} py={3} sx={{ textAlign: "center" }}>
-          <Image src="logo.svg" alt="Alveno" width="150" height="37" />
+          <Image src="logo.svg" alt="Alveno" width="150" height="37" priority />
         </Box>
 
         <Divider sx={{ backgroundColor: theme.palette.grey[100] }} />
