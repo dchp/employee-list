@@ -1,12 +1,4 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json }
-  | Json[];
-
-export interface Database {
+interface Database {
   public: {
     Tables: {
       employees: {
@@ -85,3 +77,5 @@ export interface Database {
     };
   };
 }
+
+export default Database;
