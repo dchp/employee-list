@@ -23,25 +23,17 @@ interface TeamProps {
 const Team = ({ name, employees, subteams }: TeamProps): JSX.Element => {
   return (
     <Box my={2}>
-      <Accordion
-        defaultExpanded={false}
-        sx={{
-          "&.MuiAccordion-root": {
-            boxShadow: "none",
-            border: "1px solid rgba(0, 0, 0, .125)",
-          },
-        }}
-      >
+      <Accordion defaultExpanded={false}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
+          id="team-header"
+          aria-controls="team-content"
         >
           <Typography variant="h6" align="center">
             {name}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails id="team-content">
           <Box display="flex" flexWrap="wrap" px={1}>
             {employees.map((e) => (
               <Employee

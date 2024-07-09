@@ -1,5 +1,7 @@
 import Head from "next/head";
 import { Container, Typography, Box } from "@mui/material";
+import PageContent from "@/components/layout/PageContent";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 export default function Home() {
   return (
@@ -10,10 +12,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container maxWidth="md">
-        <Box my={4}>
+      <PageContent
+        title="Zadání"
+        titleIcon={<AssignmentIcon fontSize="large" />}
+      >
+        <Container maxWidth="md">
           <Typography variant="h4" component="h1" gutterBottom>
-            Zadání Frontend Úkolu 2.0
+            Frontend Úkol 2.0
           </Typography>
           <Typography variant="h6" component="h2" gutterBottom>
             Cíl:
@@ -94,8 +99,8 @@ export default function Home() {
             V případě nejasností se obraťte na{" "}
             <a href="mailto:matuszek@iresoft.cz">matuszek@iresoft.cz</a>
           </Typography>
-        </Box>
-      </Container>
+        </Container>
+      </PageContent>
     </>
   );
 }

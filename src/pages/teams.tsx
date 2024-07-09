@@ -5,6 +5,10 @@ import { GetServerSideProps } from "next";
 import TeamWithEmployeesDb, {
   getTeamsFromTeamsDb,
 } from "@/types/supabase/TeamWithEmployeesDb";
+import PageContent from "@/components/layout/PageContent";
+import GroupIcon from "@mui/icons-material/Group";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 type TeamsProps = {
   teams: TeamType[];
@@ -45,7 +49,24 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 const Teams = ({ teams }: TeamsProps): JSX.Element => {
   return (
-    <>
+    <PageContent
+      title="Týmy"
+      titleIcon={<GroupIcon fontSize="large" />}
+      actions={[
+        { icon: <AddCircleOutlineIcon />, text: "Nový tým" },
+        {
+          icon: <AddCircleOutlineIcon />,
+          text: "Nový pracovník",
+          shortText: "Pracovník",
+        },
+        {
+          icon: <DeleteOutlineIcon />,
+          text: "Smazat zaměstnance",
+          shortText: "Smazat",
+          isSecondary: true,
+        },
+      ]}
+    >
       <Container maxWidth="md">
         {teams &&
           teams.map((team) => (
@@ -57,7 +78,7 @@ const Teams = ({ teams }: TeamsProps): JSX.Element => {
             />
           ))}
       </Container>
-    </>
+    </PageContent>
   );
 };
 

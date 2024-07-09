@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material/styles";
 declare module "@mui/material/styles/createPalette" {
   interface TypeBackground {
     sidebar: string;
+    topBar: string;
   }
 }
 
@@ -18,6 +19,40 @@ const theme = createTheme({
     },
     background: {
       sidebar: "#1A2638",
+      topBar: "#212a38",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: "none",
+          },
+          "&:active": {
+            boxShadow: "none",
+          },
+          "&:focus": {
+            boxShadow: "none",
+          },
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        h4: {
+          letterSpacing: "0.02em",
+        },
+      },
+    },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none",
+          border: "1px solid rgba(0, 0, 0, .125)",
+        },
+      },
     },
   },
 });
