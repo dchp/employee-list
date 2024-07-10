@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, Dialog, DialogContent } from "@mui/material";
 import TeamType from "@/types/Team";
 import Team from "@/components/teams/Team";
 import { GetServerSideProps } from "next";
@@ -9,6 +9,9 @@ import PageContent from "@/components/layout/PageContent";
 import GroupIcon from "@mui/icons-material/Group";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useState } from "react";
+import { TeamAdd } from "@/components/teams/TeamAdd";
+import { EmployeeAdd } from "@/components/employees/EmployeeAdd";
 
 type TeamsProps = {
   teams: TeamType[];
@@ -48,26 +51,39 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Teams = ({ teams }: TeamsProps): JSX.Element => {
+  const [showFormNewTeam, setShowFormNewTeam] = useState(false);
+  const [showFormNewEmployee, setShowFormNewEmployee] = useState(false);
+
   return (
-    <PageContent
-      title="Týmy"
-      titleIcon={<GroupIcon fontSize="large" />}
-      actions={[
-        { icon: <AddCircleOutlineIcon />, text: "Nový tým" },
-        {
-          icon: <AddCircleOutlineIcon />,
-          text: "Nový pracovník",
-          shortText: "Pracovník",
-        },
-        {
-          icon: <DeleteOutlineIcon />,
-          text: "Smazat zaměstnance",
-          shortText: "Smazat",
-          isSecondary: true,
-        },
-      ]}
-    >
-      <Container maxWidth="md">
+    <>
+      <PageContent
+        title="Týmy"
+        titleIcon={<GroupIcon fontSize="large" />}
+        actions={[
+          {
+            icon: <AddCircleOutlineIcon />,
+            text: "Nový tým",
+            onClick: () => {
+              setShowFormNewTeam(true);
+            },
+          },
+          {
+            icon: <AddCircleOutlineIcon />,
+            text: "Nový pracovník",
+            shortText: "Pracovník",
+            onClick: () => {
+              setShowFormNewEmployee(true);
+            },
+          },
+          {
+            icon: <DeleteOutlineIcon />,
+            text: "Smazat zaměstnance",
+            shortText: "Smazat",
+            isSecondary: true,
+            onClick: () => {},
+          },
+        ]}
+      >
         {teams &&
           teams.map((team) => (
             <Team
@@ -77,8 +93,21 @@ const Teams = ({ teams }: TeamsProps): JSX.Element => {
               subteams={team.subteams}
             />
           ))}
-      </Container>
-    </PageContent>
+      </PageContent>
+      <Dialog open={showFormNewTeam} onClose={() => setShowFormNewTeam(false)}>
+        <DialogContent>
+          <TeamAdd teams={teams} />
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={showFormNewEmployee}
+        onClose={() => setShowFormNewEmployee(false)}
+      >
+        <DialogContent>
+          <EmployeeAdd teams={teams} />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

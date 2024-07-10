@@ -8,6 +8,7 @@ import {
   TextField,
   Typography,
   Button,
+  MenuItem,
 } from "@mui/material";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +16,7 @@ import * as yup from "yup";
 import { FormFieldError } from "../forms/FormFieldError";
 import { FormError } from "../forms/FormError";
 import { FormSuccess } from "../forms/FormSuccess";
+import TeamType from "@/types/Team";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -27,11 +29,7 @@ const schema = yup.object().shape({
     .min(yup.ref("startDate"), "End date can't be before start date"),
 });
 
-export const EmployeeAdd = (
-  {
-    /* teams */
-  }
-) => {
+export const EmployeeAdd = ({ teams }: { teams: TeamType[] }) => {
   const [formError, setFormError] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -42,8 +40,39 @@ export const EmployeeAdd = (
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const onSubmit = handleSubmit((formData) => {
-    console.log(formData);
+  const onSubmit = handleSubmit(async (formData) => {
+    const api = process.env.API_URL ?? "";
+    const apiKey = process.env.API_KEY ?? "";
+
+    setFormError(false);
+
+    try {
+      console.log(formData);
+
+      // TODO: fix url (404 not found)
+      const response = await fetch(`${api}employees`, {
+        method: "POST",
+        headers: {
+          apikey: apiKey,
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log(response);
+
+      if (!response.ok) {
+        setFormError(true);
+      } else {
+        reset();
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
+      }
+    } catch (error) {
+      setFormError(true);
+    }
   });
 
   return (
@@ -88,11 +117,11 @@ export const EmployeeAdd = (
             control={control}
             render={({ field }) => (
               <Select {...field} label="Team">
-                {/*                 {teams.map((team) => (
+                {teams.map((team) => (
                   <MenuItem key={team.id} value={team.id}>
                     {team.name}
                   </MenuItem>
-                ))} */}
+                ))}
               </Select>
             )}
           />

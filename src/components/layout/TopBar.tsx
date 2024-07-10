@@ -41,7 +41,7 @@ export const TopBar = ({
         justifyContent: "center",
       }}
     >
-      <Box width={"100%"} maxWidth={"935px"} my={2.7}>
+      <Box width={"100%"} maxWidth={"880px"} my={2.7}>
         <Box>
           <Box display={"flex"} alignItems="center" mb={0.5}>
             {!isUpMd && (

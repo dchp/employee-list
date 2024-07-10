@@ -1,5 +1,4 @@
 import { Controller, useForm } from "react-hook-form";
-import AddIcon from "@mui/icons-material/Add";
 import {
   FormControl,
   InputLabel,
@@ -16,17 +15,14 @@ import * as yup from "yup";
 import { FormFieldError } from "../forms/FormFieldError";
 import { FormSuccess } from "../forms/FormSuccess";
 import { FormError } from "../forms/FormError";
+import TeamType from "@/types/Team";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   parentTeam: yup.string(),
 });
 
-export const TeamAdd = (
-  {
-    /* teams */
-  }
-) => {
+export const TeamAdd = ({ teams }: { teams: TeamType[] }) => {
   const [formError, setFormError] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -37,12 +33,36 @@ export const TeamAdd = (
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const onSubmit = handleSubmit((formData) => {
-    // Process formData as needed
-    console.log(formData);
-    setSuccess(true);
-    reset();
-    setTimeout(() => setSuccess(false), 2000);
+  const onSubmit = handleSubmit(async (formData) => {
+    const api = process.env.API_URL ?? "";
+    const apiKey = process.env.API_KEY ?? "";
+
+    setFormError(false);
+
+    try {
+      const response = await fetch(`${api}teams`, {
+        method: "POST",
+        headers: {
+          apikey: apiKey,
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log(response);
+
+      if (!response.ok) {
+        setFormError(true);
+      } else {
+        reset();
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
+      }
+    } catch (error) {
+      setFormError(true);
+    }
   });
 
   return (
@@ -70,11 +90,11 @@ export const TeamAdd = (
             control={control}
             render={({ field }) => (
               <Select {...field} label="Parent team">
-                {/*         {teams.map((team) => (
+                {teams.map((team) => (
                   <MenuItem key={team.id} value={team.id}>
                     {team.name}
                   </MenuItem>
-                ))} */}
+                ))}
               </Select>
             )}
           />

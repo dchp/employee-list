@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react";
 import Box from "@mui/material/Box";
 import { SideBar } from "./SideBar";
 import { TopBar } from "./TopBar";
-import { useMediaQuery, useTheme } from "@mui/material";
+import { Container, useMediaQuery, useTheme } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -65,16 +65,16 @@ const PageContent = ({
           actions={actions}
           handleDrawerToggle={handleDrawerToggle}
         />
-
         <Box
           paddingY={5}
-          paddingX={isUpMd ? 8 : 1}
+          paddingX={isUpMd ? 6 : 1}
           sx={{
             backgroundColor: (theme) => theme.palette.grey[100],
             flexGrow: 1,
           }}
+          maxWidth="md"
         >
-          {children}
+          <Container>{children}</Container>
         </Box>
       </Box>
     </Box>

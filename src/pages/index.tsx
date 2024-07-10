@@ -16,90 +16,88 @@ export default function Home() {
         title="Zadání"
         titleIcon={<AssignmentIcon fontSize="large" />}
       >
-        <Container maxWidth="md">
-          <Typography variant="h4" component="h1" gutterBottom>
-            Frontend Úkol 2.0
-          </Typography>
-          <Typography variant="h6" component="h2" gutterBottom>
-            Cíl:
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Vytvořte stránku v předchystané mini aplikaci která zobrazí seznam
-            týmů a jejich zaměstnanců.
-          </Typography>
-          <Typography variant="h6" component="h2" gutterBottom>
-            Úkoly:
-          </Typography>
-          <ul>
-            <li>Načtení a zobrazení dat:</li>
-            <ol>
-              <li>
-                Načtěte data a zobrazte hierarchickou (vnořenou) strukturu týmů
-                a jejich zaměstnanců.
-              </li>
-              <li>Týmy mohou mít podtýmy (0-N podtýmů).</li>
-              <li>Umožněte zobrazování/skrývání obsahu týmů.</li>
-              <li>
-                Zaměstnance kteří již nepracují (mají endDate v minulosti)
-                zobrazte odlišně.
-              </li>
-              <li>U každého zaměstnance zobrazte jméno a pozici.</li>
-            </ol>
-            <li>Správa týmů a zaměstnanců:</li>
-            <ol>
-              <li>
-                Umožněte přidávání zaměstnanců a týmů (můžete použít
-                předpřipravené formuláře: TeamAdd.tsx, EmployeeAdd.tsx).
-              </li>
-              <li>
-                Umožněte hromadné mazání zaměstnanců na základě výběru jednoho
-                či více zaměstnanců.
-              </li>
-            </ol>
-          </ul>
-          <Typography variant="h6" component="h2" gutterBottom>
-            Způsob práce:
-          </Typography>
-          <ul>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Frontend Úkol 2.0
+        </Typography>
+        <Typography variant="h6" component="h2" gutterBottom>
+          Cíl:
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Vytvořte stránku v předchystané mini aplikaci která zobrazí seznam
+          týmů a jejich zaměstnanců.
+        </Typography>
+        <Typography variant="h6" component="h2" gutterBottom>
+          Úkoly:
+        </Typography>
+        <ul>
+          <li>Načtení a zobrazení dat:</li>
+          <ol>
             <li>
-              Navrhněte vizuálně přitažlivý a responzivní design, který bude
-              dobře vypadat i na mobilních zařízeních.
+              Načtěte data a zobrazte hierarchickou (vnořenou) strukturu týmů a
+              jejich zaměstnanců.
             </li>
-            <li>Měřte si čas.</li>
-            <li>Dokumentujte kód.</li>
+            <li>Týmy mohou mít podtýmy (0-N podtýmů).</li>
+            <li>Umožněte zobrazování/skrývání obsahu týmů.</li>
             <li>
-              Použijte jakékoliv knihovny a technologie. Povinné jsou pouze
-              React a TypeScript.
+              Zaměstnance kteří již nepracují (mají endDate v minulosti)
+              zobrazte odlišně.
             </li>
-          </ul>
-          <Typography variant="h6" component="h2" gutterBottom>
-            API a databáze:
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Pro API s databází využijte Supabase.com. Dokumentace k API je
-            dostupná na{" "}
-            <a
-              href="https://github.com/ladrlu/react-interview/blob/main/README.md#dokumentace-api"
-              target="_blank"
-            >
-              GitHubu
-            </a>
-            .
-          </Typography>
-          <Typography variant="h6" component="h2" gutterBottom>
-            Časová náročnost:
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Odhadovaná náročnost úkolu je do 1 MD.
-          </Typography>
-          <Typography variant="h6" component="h2" gutterBottom>
-            Kontakt:
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            V případě nejasností se obraťte na{" "}
-            <a href="mailto:matuszek@iresoft.cz">matuszek@iresoft.cz</a>
-          </Typography>
-        </Container>
+            <li>U každého zaměstnance zobrazte jméno a pozici.</li>
+          </ol>
+          <li>Správa týmů a zaměstnanců:</li>
+          <ol>
+            <li>
+              Umožněte přidávání zaměstnanců a týmů (můžete použít
+              předpřipravené formuláře: TeamAdd.tsx, EmployeeAdd.tsx).
+            </li>
+            <li>
+              Umožněte hromadné mazání zaměstnanců na základě výběru jednoho či
+              více zaměstnanců.
+            </li>
+          </ol>
+        </ul>
+        <Typography variant="h6" component="h2" gutterBottom>
+          Způsob práce:
+        </Typography>
+        <ul>
+          <li>
+            Navrhněte vizuálně přitažlivý a responzivní design, který bude dobře
+            vypadat i na mobilních zařízeních.
+          </li>
+          <li>Měřte si čas.</li>
+          <li>Dokumentujte kód.</li>
+          <li>
+            Použijte jakékoliv knihovny a technologie. Povinné jsou pouze React
+            a TypeScript.
+          </li>
+        </ul>
+        <Typography variant="h6" component="h2" gutterBottom>
+          API a databáze:
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Pro API s databází využijte Supabase.com. Dokumentace k API je
+          dostupná na{" "}
+          <a
+            href="https://github.com/ladrlu/react-interview/blob/main/README.md#dokumentace-api"
+            target="_blank"
+          >
+            GitHubu
+          </a>
+          .
+        </Typography>
+        <Typography variant="h6" component="h2" gutterBottom>
+          Časová náročnost:
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Odhadovaná náročnost úkolu je do 1 MD.
+        </Typography>
+        <Typography variant="h6" component="h2" gutterBottom>
+          Kontakt:
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          V případě nejasností se obraťte na{" "}
+          <a href="mailto:matuszek@iresoft.cz">matuszek@iresoft.cz</a>
+        </Typography>
       </PageContent>
     </>
   );

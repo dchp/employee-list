@@ -4,6 +4,7 @@ import { Button, useMediaQuery } from "@mui/material";
 export interface ActionButtonProps {
   icon: React.ReactNode;
   text: string;
+  onClick: () => void;
   shortText?: string;
   isSecondary?: boolean;
 }
@@ -11,6 +12,7 @@ export interface ActionButtonProps {
 const ActionButton = ({
   icon,
   text,
+  onClick,
   shortText,
   isSecondary,
 }: ActionButtonProps) => {
@@ -21,6 +23,7 @@ const ActionButton = ({
       variant="contained"
       color={isSecondary ? "secondary" : "primary"}
       startIcon={icon}
+      onClick={onClick}
     >
       {isUpMd ? text : shortText ?? text}
     </Button>
