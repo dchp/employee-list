@@ -1,4 +1,4 @@
-import Team from "../Team";
+import Team from "../../types/Team";
 import Database from "./Database";
 import TeamDb from "./TeamDb";
 

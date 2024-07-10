@@ -67,12 +67,12 @@ const PageContent = ({
         />
         <Box
           paddingY={5}
-          paddingX={isUpMd ? 6 : 1}
+          paddingX={isUpMd ? 4 : 1}
           sx={{
             backgroundColor: (theme) => theme.palette.grey[100],
             flexGrow: 1,
           }}
-          maxWidth="md"
+          maxWidth="920px"
         >
           <Container>{children}</Container>
         </Box>

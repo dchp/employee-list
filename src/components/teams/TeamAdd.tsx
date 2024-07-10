@@ -16,13 +16,20 @@ import { FormFieldError } from "../forms/FormFieldError";
 import { FormSuccess } from "../forms/FormSuccess";
 import { FormError } from "../forms/FormError";
 import TeamType from "@/types/Team";
+import { supabaseClient } from "@/supabase/client";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   parentTeam: yup.string(),
 });
 
-export const TeamAdd = ({ teams }: { teams: TeamType[] }) => {
+export const TeamAdd = ({
+  teams,
+  onSuccess,
+}: {
+  teams: TeamType[];
+  onSuccess: () => void;
+}) => {
   const [formError, setFormError] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -34,31 +41,24 @@ export const TeamAdd = ({ teams }: { teams: TeamType[] }) => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit(async (formData) => {
-    const api = process.env.API_URL ?? "";
-    const apiKey = process.env.API_KEY ?? "";
-
     setFormError(false);
 
     try {
-      const response = await fetch(`${api}teams`, {
-        method: "POST",
-        headers: {
-          apikey: apiKey,
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify(formData),
-      });
+      const filteredFormData = Object.fromEntries(
+        Object.entries(formData).filter(([_, value]) => value !== "")
+      );
 
-      console.log(response);
+      const response = await supabaseClient
+        .from("teams")
+        .insert({ ...filteredFormData });
 
-      if (!response.ok) {
+      if (response.error) {
         setFormError(true);
       } else {
         reset();
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
+        onSuccess();
       }
     } catch (error) {
       setFormError(true);

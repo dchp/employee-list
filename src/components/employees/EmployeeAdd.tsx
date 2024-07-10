@@ -17,6 +17,7 @@ import { FormFieldError } from "../forms/FormFieldError";
 import { FormError } from "../forms/FormError";
 import { FormSuccess } from "../forms/FormSuccess";
 import TeamType from "@/types/Team";
+import { supabaseClient } from "@/supabase/client";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -29,7 +30,13 @@ const schema = yup.object().shape({
     .min(yup.ref("startDate"), "End date can't be before start date"),
 });
 
-export const EmployeeAdd = ({ teams }: { teams: TeamType[] }) => {
+export const EmployeeAdd = ({
+  teams,
+  onSuccess,
+}: {
+  teams: TeamType[];
+  onSuccess: () => void;
+}) => {
   const [formError, setFormError] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -41,34 +48,24 @@ export const EmployeeAdd = ({ teams }: { teams: TeamType[] }) => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit(async (formData) => {
-    const api = process.env.API_URL ?? "";
-    const apiKey = process.env.API_KEY ?? "";
-
     setFormError(false);
 
     try {
-      console.log(formData);
+      const filteredFormData = Object.fromEntries(
+        Object.entries(formData).filter(([_, value]) => value !== "")
+      );
 
-      // TODO: fix url (404 not found)
-      const response = await fetch(`${api}employees`, {
-        method: "POST",
-        headers: {
-          apikey: apiKey,
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await supabaseClient
+        .from("employees")
+        .insert({ ...filteredFormData });
 
-      console.log(response);
-
-      if (!response.ok) {
+      if (response.error) {
         setFormError(true);
       } else {
         reset();
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
+        onSuccess();
       }
     } catch (error) {
       setFormError(true);

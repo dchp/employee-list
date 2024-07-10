@@ -1,58 +1,48 @@
-import { Container, Dialog, DialogContent } from "@mui/material";
-import TeamType from "@/types/Team";
+import { Dialog, DialogContent } from "@mui/material";
+import TeamType from "../types/Team";
 import Team from "@/components/teams/Team";
-import { GetServerSideProps } from "next";
 import TeamWithEmployeesDb, {
   getTeamsFromTeamsDb,
-} from "@/types/supabase/TeamWithEmployeesDb";
+} from "@/supabase/types/TeamWithEmployeesDb";
 import PageContent from "@/components/layout/PageContent";
 import GroupIcon from "@mui/icons-material/Group";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TeamAdd } from "@/components/teams/TeamAdd";
 import { EmployeeAdd } from "@/components/employees/EmployeeAdd";
+import { supabaseClient } from "@/supabase/client";
 
-type TeamsProps = {
-  teams: TeamType[];
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const api = process.env.API_URL ?? "";
-  const apiKey = process.env.API_KEY ?? "";
-  let data: TeamWithEmployeesDb[];
-
-  if (api === "" || apiKey === "") {
-    throw new Error("API is not provided.");
-  }
-
+const loadTeams = async (): Promise<TeamType[]> => {
   try {
-    const response = await fetch(`${api}teams?select=*,employees(*)`, {
-      headers: {
-        apikey: apiKey,
-        Authorization: `Bearer ${apiKey}`,
-      },
-    });
+    const { data } = await supabaseClient
+      .from("teams")
+      .select("*,employees(*)")
+      .returns<TeamWithEmployeesDb[]>();
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data from API.");
-    }
-
-    data = await response.json();
+    return getTeamsFromTeamsDb(data ?? []);
   } catch (error) {
-    throw new Error("Failed to fetch data from API.");
+    console.error("Error loading teams.", error);
+    return [];
   }
-
-  return {
-    props: {
-      teams: getTeamsFromTeamsDb(data),
-    },
-  };
 };
 
-const Teams = ({ teams }: TeamsProps): JSX.Element => {
+const Teams = (): JSX.Element => {
   const [showFormNewTeam, setShowFormNewTeam] = useState(false);
   const [showFormNewEmployee, setShowFormNewEmployee] = useState(false);
+  const [reloadTeams, setReloadTeams] = useState(true);
+  const [teams, setTeams] = useState<TeamType[]>([]);
+  useEffect(() => {
+    if (!reloadTeams) {
+      return;
+    }
+    async function fetchData() {
+      const teams = await loadTeams();
+      setTeams(teams);
+    }
+    fetchData();
+    setReloadTeams(false);
+  }, [reloadTeams]);
 
   return (
     <>
@@ -96,7 +86,12 @@ const Teams = ({ teams }: TeamsProps): JSX.Element => {
       </PageContent>
       <Dialog open={showFormNewTeam} onClose={() => setShowFormNewTeam(false)}>
         <DialogContent>
-          <TeamAdd teams={teams} />
+          <TeamAdd
+            teams={teams}
+            onSuccess={() => {
+              setReloadTeams(true);
+            }}
+          />
         </DialogContent>
       </Dialog>
       <Dialog
@@ -104,7 +99,12 @@ const Teams = ({ teams }: TeamsProps): JSX.Element => {
         onClose={() => setShowFormNewEmployee(false)}
       >
         <DialogContent>
-          <EmployeeAdd teams={teams} />
+          <EmployeeAdd
+            teams={teams}
+            onSuccess={() => {
+              setReloadTeams(true);
+            }}
+          />
         </DialogContent>
       </Dialog>
     </>

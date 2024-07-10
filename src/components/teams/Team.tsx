@@ -5,14 +5,10 @@ import {
   Box,
   AccordionSummary,
   AccordionDetails,
+  Accordion,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Employee from "../employees/Employee";
-import dynamic from "next/dynamic";
-
-const Accordion = dynamic(() => import("@mui/material/Accordion"), {
-  ssr: false,
-});
 
 interface TeamProps {
   name: string;

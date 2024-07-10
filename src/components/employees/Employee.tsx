@@ -1,10 +1,13 @@
-import { Avatar, Box, Card, CardHeader, useTheme } from "@mui/material";
+import { Avatar, Card, CardHeader, useTheme } from "@mui/material";
+import EmployeeToggleButton from "./EmployeeToggleButton";
 
 interface EmployeeProps {
   name: string;
   surname: string;
   position: string;
   isNotEmployed?: boolean;
+  isSelected?: boolean;
+  onClick?: () => void;
 }
 
 const Employee = ({
@@ -12,16 +15,20 @@ const Employee = ({
   surname,
   position,
   isNotEmployed,
+  isSelected,
+  onClick,
 }: EmployeeProps) => {
   const theme = useTheme();
 
   return (
-    <Box m={"6px"} sx={{ minWidth: "205px" }}>
-      <Card
-        sx={{ backgroundColor: theme.palette.grey[100], borderRadius: 1 }}
-        elevation={0}
-      >
+    <EmployeeToggleButton
+      value="check"
+      selected={isSelected}
+      onChange={onClick}
+    >
+      <Card elevation={0} sx={{ backgroundColor: "transparent" }}>
         <CardHeader
+          sx={{ padding: "3px" }}
           avatar={
             <Avatar
               sx={{
@@ -36,7 +43,7 @@ const Employee = ({
           subheader={position}
         />
       </Card>
-    </Box>
+    </EmployeeToggleButton>
   );
 };
 

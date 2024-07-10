@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^3.6.0",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@supabase/supabase-js": "^2.44.3",
     "next": "14.2.4",
     "object-assign": "^4.1.1",
     "react": "^18",
