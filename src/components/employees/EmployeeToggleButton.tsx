@@ -13,7 +13,7 @@ const EmployeeToggleButton = styled(ToggleButton)(({ theme: Theme }) => ({
     backgroundColor: theme.palette.grey[100],
   },
   "&.Mui-selected, &.Mui-selected:hover": {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: "#aee7f9",
   },
 }));
 

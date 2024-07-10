@@ -13,10 +13,18 @@ import Employee from "../employees/Employee";
 interface TeamProps {
   name: string;
   employees: EmployeeType[];
+  selectedEmployeeIds: string[];
   subteams: TeamType[];
+  onEmployeeClick: (employeeId: string) => void;
 }
 
-const Team = ({ name, employees, subteams }: TeamProps): JSX.Element => {
+const Team = ({
+  name,
+  employees,
+  selectedEmployeeIds,
+  subteams,
+  onEmployeeClick,
+}: TeamProps): JSX.Element => {
   return (
     <Box my={2}>
       <Accordion defaultExpanded={false}>
@@ -38,6 +46,8 @@ const Team = ({ name, employees, subteams }: TeamProps): JSX.Element => {
                 surname={e.surname}
                 position={e.position ?? ""}
                 isNotEmployed={e.ended}
+                isSelected={selectedEmployeeIds.includes(e.id)}
+                onClick={() => onEmployeeClick(e.id)}
               />
             ))}
           </Box>
@@ -47,6 +57,8 @@ const Team = ({ name, employees, subteams }: TeamProps): JSX.Element => {
                 name={team.name ?? ""}
                 employees={team.employees}
                 subteams={team.subteams}
+                selectedEmployeeIds={selectedEmployeeIds}
+                onEmployeeClick={onEmployeeClick}
               />
             </Box>
           ))}

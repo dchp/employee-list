@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { TeamAdd } from "@/components/teams/TeamAdd";
 import { EmployeeAdd } from "@/components/employees/EmployeeAdd";
 import { supabaseClient } from "@/supabase/client";
+import { set } from "react-hook-form";
 
 const loadTeams = async (): Promise<TeamType[]> => {
   try {
@@ -32,6 +33,7 @@ const Teams = (): JSX.Element => {
   const [showFormNewEmployee, setShowFormNewEmployee] = useState(false);
   const [reloadTeams, setReloadTeams] = useState(true);
   const [teams, setTeams] = useState<TeamType[]>([]);
+  const [selectedEmployeeIds, setSelectedEmployeeIds] = useState<string[]>([]);
   useEffect(() => {
     if (!reloadTeams) {
       return;
@@ -49,7 +51,7 @@ const Teams = (): JSX.Element => {
       <PageContent
         title="Týmy"
         titleIcon={<GroupIcon fontSize="large" />}
-        actions={[
+        mainActions={[
           {
             icon: <AddCircleOutlineIcon />,
             text: "Nový tým",
@@ -65,14 +67,27 @@ const Teams = (): JSX.Element => {
               setShowFormNewEmployee(true);
             },
           },
-          {
-            icon: <DeleteOutlineIcon />,
-            text: "Smazat zaměstnance",
-            shortText: "Smazat",
-            isSecondary: true,
-            onClick: () => {},
-          },
         ]}
+        secondaryActions={
+          selectedEmployeeIds.length > 0
+            ? [
+                {
+                  icon: <DeleteOutlineIcon />,
+                  text: `Smazat zaměstnance (${selectedEmployeeIds.length})`,
+                  shortText: `Smazat (${selectedEmployeeIds.length})`,
+                  // TODO: move to a separate function with try-catch, show confirmation dialog, add unselect button
+                  onClick: async () => {
+                    await supabaseClient
+                      .from("employees")
+                      .delete()
+                      .in("id", selectedEmployeeIds);
+                    setSelectedEmployeeIds([]);
+                    setReloadTeams(true);
+                  },
+                },
+              ]
+            : []
+        }
       >
         {teams &&
           teams.map((team) => (
@@ -81,6 +96,14 @@ const Teams = (): JSX.Element => {
               name={team.name ?? ""}
               employees={team.employees}
               subteams={team.subteams}
+              selectedEmployeeIds={selectedEmployeeIds}
+              onEmployeeClick={(employeeId: string) => {
+                setSelectedEmployeeIds(
+                  selectedEmployeeIds.includes(employeeId)
+                    ? selectedEmployeeIds.filter((id) => id !== employeeId)
+                    : [...selectedEmployeeIds, employeeId]
+                );
+              }}
             />
           ))}
       </PageContent>

@@ -9,11 +9,12 @@ const drawerWidth = 240;
 interface PageProps {
   title: string;
   titleIcon: React.ReactNode;
-  actions?: ActionButtonProps[];
+  mainActions?: Action[];
+  secondaryActions?: Action[];
   children: ReactNode;
 }
 import { Roboto } from "next/font/google";
-import { ActionButtonProps } from "../controls/ActionButton";
+import Action from "@/types/Actions";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -23,7 +24,8 @@ const roboto = Roboto({
 const PageContent = ({
   title,
   titleIcon,
-  actions,
+  mainActions,
+  secondaryActions,
   children,
 }: PageProps): JSX.Element => {
   const theme = useTheme();
@@ -62,7 +64,8 @@ const PageContent = ({
         <TopBar
           title={title}
           titleIcon={titleIcon}
-          actions={actions}
+          mainActions={mainActions}
+          secondaryActions={secondaryActions}
           handleDrawerToggle={handleDrawerToggle}
         />
         <Box
@@ -72,6 +75,7 @@ const PageContent = ({
             backgroundColor: (theme) => theme.palette.grey[100],
             flexGrow: 1,
           }}
+          width="920px"
           maxWidth="920px"
         >
           <Container>{children}</Container>

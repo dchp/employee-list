@@ -9,19 +9,22 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import ActionButton, { ActionButtonProps } from "../controls/ActionButton";
+import ActionButton from "../controls/ActionButton";
+import Action from "@/types/Actions";
 
 export interface TopBarProps {
   title: string;
   titleIcon: React.ReactNode;
-  actions?: ActionButtonProps[];
+  mainActions?: Action[];
+  secondaryActions?: Action[];
   handleDrawerToggle: () => void;
 }
 
 export const TopBar = ({
   title,
   titleIcon,
-  actions,
+  mainActions,
+  secondaryActions,
   handleDrawerToggle,
 }: TopBarProps) => {
   const theme = useTheme();
@@ -66,8 +69,11 @@ export const TopBar = ({
           </Box>
 
           <Stack direction="row" spacing={"9px"}>
-            {actions?.map((action) => (
+            {mainActions?.map((action) => (
               <ActionButton key={action.text} {...action} />
+            ))}
+            {secondaryActions?.map((action) => (
+              <ActionButton key={action.text} {...action} isSecondary />
             ))}
           </Stack>
         </Box>
